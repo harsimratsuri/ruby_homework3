@@ -10,7 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_18_032351) do
+ActiveRecord::Schema.define(version: 2019_11_18_033931) do
+
+  create_table "appointments", force: :cascade do |t|
+    t.datetime "visit"
+    t.integer "physician_id", null: false
+    t.integer "patient_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["patient_id"], name: "index_appointments_on_patient_id"
+    t.index ["physician_id"], name: "index_appointments_on_physician_id"
+  end
+
+  create_table "office_locations", force: :cascade do |t|
+    t.string "street_address"
+    t.integer "zip"
+    t.integer "phone"
+    t.integer "physician_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["physician_id"], name: "index_office_locations_on_physician_id"
+  end
 
   create_table "patients", force: :cascade do |t|
     t.string "name"
@@ -18,4 +38,14 @@ ActiveRecord::Schema.define(version: 2019_11_18_032351) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "physicians", force: :cascade do |t|
+    t.string "name"
+    t.string "specialty"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  add_foreign_key "appointments", "patients"
+  add_foreign_key "appointments", "physicians"
+  add_foreign_key "office_locations", "physicians"
 end
